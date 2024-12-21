@@ -1,6 +1,5 @@
 import React from 'react'
 import './Home.css'
-import bg from './background.png'
 
 const Home = () => {
   return (
@@ -12,7 +11,7 @@ const Home = () => {
         </a>
       </div>
       </nav>
-      <img src={bg} className='background'/>
+      <img src="/background.png" className='background' alt="Background"/>
     </div>
   )
 }
