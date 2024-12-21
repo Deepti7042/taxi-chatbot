@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { LexRuntime } from 'aws-sdk';
 import './Chatbot.css';
 
 function ChatbotIcon({ onClick }) {
     return (
         <div className="chatbot-icon" onClick={onClick}>
-            <span>💬</span>
+            <span role="img" aria-label="Chatbot Icon">💬</span>
         </div>
     );
 }
@@ -13,17 +13,20 @@ function ChatbotIcon({ onClick }) {
 function Chatbot({ isVisible }) {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const messagesEndRef = useRef(null); // Ref for auto-scrolling
+    const messagesEndRef = useRef(null);
 
-    const lexRuntime = new LexRuntime({
-        region: process.env.REACT_APP_AWS_REGION,
-        credentials: {
-            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-        },
-    });
+    // Memoize lexRuntime initialization
+    const lexRuntime = useMemo(() => {
+        return new LexRuntime({
+            region: process.env.REACT_APP_AWS_REGION,
+            credentials: {
+                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+            },
+        });
+    }, []);
 
-    // Use useCallback to memoize the function
+    // UseCallback for sendMessageToLex
     const sendMessageToLex = useCallback(async (message) => {
         const params = {
             botAlias: 'TaxiBooking',
@@ -35,7 +38,6 @@ function Chatbot({ isVisible }) {
         try {
             const response = await lexRuntime.postText(params).promise();
             if (message !== 'Heya') {
-                // Only add to messages if it's not "Heya"
                 setMessages((prevMessages) => [
                     ...prevMessages,
                     { text: message, sender: 'user' },
@@ -54,6 +56,7 @@ function Chatbot({ isVisible }) {
         }
     }, [lexRuntime]);
 
+    // Handle input changes
     const handleInputChange = (e) => {
         setInput(e.target.value);
     };
@@ -109,7 +112,7 @@ function Chatbot({ isVisible }) {
 function App() {
     const [isChatVisible, setIsChatVisible] = useState(false);
 
-    const toggleChat = () => setIsChatVisible(!isChatVisible);
+    const toggleChat = () => setIsChatVisible((prev) => !prev);
 
     return (
         <div>
