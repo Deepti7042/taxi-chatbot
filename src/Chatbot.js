@@ -18,8 +18,8 @@ function Chatbot({ isVisible }) {
     const lexRuntime = new LexRuntime({
         region: 'us-east-1',
         credentials: {
-            accessKeyId: 'AKIAUMYCIGCN3OO5KU6Y',
-            secretAccessKey: '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',
+            accessKeyId: '',
+            secretAccessKey: '',
         },
     });
 
