@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { LexRuntime } from 'aws-sdk';
 import './Chatbot.css';
 
@@ -16,14 +16,15 @@ function Chatbot({ isVisible }) {
     const messagesEndRef = useRef(null); // Ref for auto-scrolling
 
     const lexRuntime = new LexRuntime({
-        region: 'us-east-1',
+        region: process.env.REACT_APP_AWS_REGION,
         credentials: {
-            accessKeyId: 'AKIAUMYCIGCN3OO5KU6Y',
-            secretAccessKey: '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',
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
         },
     });
 
-    const sendMessageToLex = async (message) => {
+    // Use useCallback to memoize the function
+    const sendMessageToLex = useCallback(async (message) => {
         const params = {
             botAlias: 'TaxiBooking',
             botName: 'TaxiBooking',
@@ -51,7 +52,7 @@ function Chatbot({ isVisible }) {
                 { text: "Sorry, I'm having trouble understanding you.", sender: 'bot' },
             ]);
         }
-    };
+    }, []);
 
     const handleInputChange = (e) => {
         setInput(e.target.value);
@@ -74,7 +75,7 @@ function Chatbot({ isVisible }) {
         if (isVisible && messages.length === 0) {
             sendMessageToLex('Heya'); // Trigger intent without displaying "Heya"
         }
-    }, [isVisible]);
+    }, [isVisible, messages.length, sendMessageToLex]);
 
     if (!isVisible) return null;
 
