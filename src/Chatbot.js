@@ -52,7 +52,7 @@ function Chatbot({ isVisible }) {
                 { text: "Sorry, I'm having trouble understanding you.", sender: 'bot' },
             ]);
         }
-    }, []);
+    }, [lexRuntime]);
 
     const handleInputChange = (e) => {
         setInput(e.target.value);
