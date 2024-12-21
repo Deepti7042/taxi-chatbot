@@ -1,35 +1,79 @@
+/* Home Page Styles */
 .home {
-    background-color: #000000; /* Black background for the main page */
+    background-color: #000; /* Black background for the main page */
     width: 100%;
     height: 100vh; /* Covers the full viewport height */
-    color: #fff; /* Ensures text contrasts with the black background */
+    color: #fff; /* Text contrasts with the black background */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Centers content vertically and horizontally */
     margin: 0;
     padding: 0;
+    overflow: hidden; /* Ensures no extra scrollbars */
 }
 
+/* Navbar Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff; /* Keeps navbar background white */
-    color: #000;
+    background-color: #fff; /* White background for navbar */
+    color: #000; /* Black text color for navbar */
     padding: 1rem;
     width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
+    position: fixed; /* Keeps navbar at the top */
+    top: 0;
+    z-index: 1000; /* Ensures navbar is always on top */
 }
 
+/* Logo in Navbar */
 .navbar-left .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #000; /* Ensures the logo text is black to match navbar */
+    color: #000; /* Black text for the logo */
     text-decoration: none;
 }
 
+/* Background Image Styles */
 .background {
+    display: flex;
+    justify-content: center;
     align-items: center;
     margin: 0 auto;
-    width: auto;
+    width: 100%;
     height: auto;
+    max-height: calc(100vh - 80px); /* Prevents image from exceeding viewport height minus navbar height */
+    object-fit: cover; /* Ensures the image covers its container */
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.5rem 1rem; /* Adjusts padding for smaller screens */
+    }
+
+    .navbar-left .logo {
+        font-size: 1.25rem; /* Smaller font size for mobile */
+    }
+
+    .background {
+        max-height: 60vh; /* Restricts image height on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column; /* Stacks navbar items vertically for very small screens */
+        align-items: flex-start;
+    }
+
+    .navbar-left .logo {
+        font-size: 1rem; /* Further reduce logo font size */
+    }
+
+    .background {
+        max-height: 50vh; /* Further restricts image height for mobile */
+    }
 }

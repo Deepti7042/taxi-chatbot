@@ -26,7 +26,7 @@ function Chatbot({ isVisible }) {
         });
     }, []);
 
-    // UseCallback for sendMessageToLex
+    // Memoize sendMessageToLex function
     const sendMessageToLex = useCallback(async (message) => {
         const params = {
             botAlias: 'TaxiBooking',
@@ -56,7 +56,6 @@ function Chatbot({ isVisible }) {
         }
     }, [lexRuntime]);
 
-    // Handle input changes
     const handleInputChange = (e) => {
         setInput(e.target.value);
     };
@@ -76,7 +75,7 @@ function Chatbot({ isVisible }) {
     // Trigger Welcome intent when chatbot becomes visible
     useEffect(() => {
         if (isVisible && messages.length === 0) {
-            sendMessageToLex('Heya'); // Trigger intent without displaying "Heya"
+            sendMessageToLex('Heya');
         }
     }, [isVisible, messages.length, sendMessageToLex]);
 
